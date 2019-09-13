@@ -1,6 +1,6 @@
 import React         from 'react';
 import './App.css';
-import OptIn         from './containers/OptIn';
+import Home          from './containers/home/Home';
 import { getConfig } from './core/services/communication/communicaton.service';
 
 function App() {
@@ -11,9 +11,7 @@ function App() {
 	}
 
 	return (
-		<div className="App">
-			<OptIn/>
-		</div>
+		<Home/>
 	);
 }
 
