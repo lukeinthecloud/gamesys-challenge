@@ -13,4 +13,51 @@ body,
 body {
 	font-size: 16px;
 	background: var(--grey-primary);
+	box-sizing: border-box;
+}
+
+.u-d-none {
+	display: none;
+}
+
+.u-visibility-none {
+	visibility: hidden;
+}
+
+.u-justify-center {
+	justify-content: center;
+}
+
+.u-justify-start {
+	justify-content: flex-start;
+}
+
+.u-justify-end {
+	justify-content: flex-end;
+}
+
+.u-align-center {
+	align-items: center;
+}
+
+.u-align-start {
+	align-items: start;
+}
+
+.u-flex-column {
+	flex-direction: column;
+}
+
+.u-flex-row {
+	flex-direction: row;
+}
+
+.u-with-100 {
+	width: 100%;
+}
+
+@media(max-width: 768px) {
+	html {
+		font-size: 14px;
+	}
 }
