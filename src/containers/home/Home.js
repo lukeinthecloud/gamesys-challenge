@@ -1,11 +1,11 @@
 import React                   from 'react';
-import OptIn                   from '../../components/opt-in/OptIn';
-import { HomeContainerStyled } from './styles/Home.styles';
+import CountDownTimer          from '../../components/opt-in/CountDownTimer';
+import { HomeContainerStyled } from './Home.styles';
 
 export default function Home() {
 	return (
 		<HomeContainerStyled>
-			<OptIn/>
+			<CountDownTimer/>
 		</HomeContainerStyled>
 	);
 }
