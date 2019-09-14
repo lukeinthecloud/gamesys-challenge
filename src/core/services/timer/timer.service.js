@@ -1,7 +1,14 @@
+const defaultCompleteValue = {
+	hours: '00',
+	minutes: '00',
+	seconds: '00',
+	complete: true
+};
+
 function generateCountDownTimer(time, updateCallback) {
 	let endDate = new Date();
 
-	if (typeof time === 'string') {
+	if (_isValidDateType(time)) {
 		endDate = new Date(time);
 	} else {
 		endDate.setSeconds(endDate.getSeconds() + time);
@@ -15,17 +22,22 @@ function generateCountDownTimer(time, updateCallback) {
 	//       methods in the module to make use of currying to allow you to instantiate and start
 	//       your new timer as well as a have a way to stop it when you like
 	return () => {
-		_stopTimer(interval, updateCallback);
+		clearInterval(interval);
+
+		// Note: we return this else we go into a recursive loop (if the stop was in the callback)
+		return defaultCompleteValue;
 	};
 }
 
 function _startCountDown(endTime, updateCallback) {
+	// Note: generally most people would use a library, as interval is not totally accurate, however
+	//  I could not fully justify the need for one and this seemed like the most simple and effective solution.
 	const interval = setInterval(() => {
 		const now = new Date().getTime();
 		const timeDifference = endTime - now;
 
 		if (timeDifference <= 0) {
-			_stopTimer(interval, updateCallback);
+			_stopTimer(interval);
 			return;
 		}
 
@@ -72,14 +84,12 @@ function _setTimeFormatting(value) {
 	return `${value}`
 }
 
-function _stopTimer(interval, updateCallback) {
+function _isValidDateType(time) {
+	return typeof time === 'string' || `${time}`.length >= 13;
+}
+
+function _stopTimer(interval) {
 	clearInterval(interval);
-	updateCallback({
-		hours: '00',
-		minutes: '00',
-		seconds: '00',
-		complete: true
-	});
 }
 
 export {

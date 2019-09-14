@@ -10,20 +10,21 @@ export default function Timer(props) {
 		seconds: '00',
 	});
 
+	window.onbeforeunload = function(e) {
+		console.log(timer);
+		localStorage.setItem('timer', JSON.stringify(timer));
+		return 'Prompt';
+	};
+
 	useEffect(() => {
 		if (props.duration) {
 			generateCountDownTimer(props.duration, _timerUpdateCallback);
 		}
 
-		window.onbeforeunload = function() {
-			console.log('hit');
-			localStorage.setItem('test', 'test');
-			return 'Dude, are you sure you want to refresh? Think of the kittens!';
-		};
+
 	}, [props.duration]);
 
 	function _timerUpdateCallback(value) {
-		console.log(value);
 		setTimer(value);
 	}
 
