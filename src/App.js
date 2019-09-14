@@ -1,5 +1,5 @@
 import React         from 'react';
-import './App.css';
+import './styles/App.css';
 import Home          from './containers/home/Home';
 import { getConfig } from './core/services/communication/communicaton.service';
 

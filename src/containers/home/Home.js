@@ -1,5 +1,5 @@
 import React                   from 'react';
-import CountDownTimer          from '../../components/opt-in/CountDownTimer';
+import CountDownTimer          from '../../components/count-down-timer/CountDownTimer';
 import { HomeContainerStyled } from './Home.styles';
 
 export default function Home() {

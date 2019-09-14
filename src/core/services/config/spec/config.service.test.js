@@ -1,8 +1,8 @@
 import mockAxios from 'axios';
 
-import { getConfig } from '../communicaton.service';
+import { getConfig } from '../../communication/communicaton.service';
 
-it('renders without crashing', async () => {
+it('getConfig: returns JSON value from call', async () => {
 	const expected = {
 		duration: 30,
 		cashValue: {

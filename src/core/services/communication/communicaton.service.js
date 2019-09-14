@@ -1,19 +1,10 @@
 import axios from 'axios';
 
-async function getConfig(configUrl) {
-	try {
-		const response = await _get(configUrl);
-		return response.data;
-	} catch (error) {
-		console.error(error);
-	}
-}
-
-
-async function _get(url) {
+// Note: just a small abstraction over a request library, could easily swap this with a fetch or whatever choice
+async function get(url) {
 	return axios.get(url)
 }
 
 export {
-	getConfig
-};
+	get
+}
