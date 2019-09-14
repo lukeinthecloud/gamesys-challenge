@@ -1,14 +1,10 @@
 import React         from 'react';
 import './styles/App.css';
 import Home          from './containers/home/Home';
-import { getConfig } from './core/services/communication/communicaton.service';
+import dotenv        from 'dotenv';
 
 function App() {
-	intitialize();
-
-	async function intitialize() {
-		let data = await getConfig('http://localhost:3000/config.json');
-	}
+	dotenv.config();
 
 	return (
 		<Home/>

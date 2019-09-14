@@ -1,5 +1,5 @@
-import React                      from 'react';
-import { generateCountDownTimer } from '../../core/services/timer/timer.service';
+import React, { useEffect, useState } from 'react';
+import { generateCountDownTimer }     from '../../core/services/timer/timer.service';
 import {
 	CountDownTimerCashValueContainerStyled,
 	CountDownCashValueMessageStyled,
@@ -9,12 +9,12 @@ import {
 	CountDownTimerLinkStyled,
 	CountDownTimerClockContainerStyled,
 	CountDownTimerValueStyled
-}                                 from './CountDownTimer.styles';
+}                                     from './CountDownTimer.styles';
 
-export default function CountDownTimer() {
+export default function CountDownTimer(props) {
 	useEffect(() => {
-		const startTimer = generateCountDownTimer();
-	});
+
+	}, [props.config]);
 
 	return (
 		<CountDownTimerContainerStyled className="u-flex-column u-align-center">
