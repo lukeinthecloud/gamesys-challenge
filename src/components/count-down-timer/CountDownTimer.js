@@ -1,45 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { generateCountDownTimer }     from '../../core/services/timer/timer.service';
+import React, { useEffect, useState, useCallback } from 'react';
+import CashValue                                   from './CashValue/CashValue';
+
 import {
-	CountDownTimerCashValueContainerStyled,
-	CountDownCashValueMessageStyled,
-	CountDownTimerCashValueImageStyled,
 	CountDownTimerContainerStyled,
-	CountDownTimerButtonContainerStyled,
-	CountDownTimerLinkStyled,
 	CountDownTimerClockContainerStyled,
 	CountDownTimerValueStyled
-}                                     from './CountDownTimer.styles';
+}            from './CountDownTimer.styles';
+
+import OptIn from './opt-in/Opt-in';
 
 export default function CountDownTimer(props) {
-	useEffect(() => {
+	const [cashValue, setCashValue] = useState({
+		currency: '£',
+		value: '0'
+	});
+	const [optInLink, setOptInLink] = useState('');
+	const [duration, setDuration] = useState(0);
 
+	const _setDataFromConfig = useCallback(() => {
+		if (props.config) {
+			setCashValue(props.config.cashValue);
+			setOptInLink(props.config.optInLink);
+			setDuration(props.config.duration);
+		}
 	}, [props.config]);
 
-	return (
-		<CountDownTimerContainerStyled className="u-flex-column u-align-center">
+	useEffect(() => {
+		_setDataFromConfig();
+	}, [props.config, _setDataFromConfig]);
 
-			<CountDownTimerCashValueContainerStyled className="u-flex-column u-align-center">
-				<CountDownTimerCashValueImageStyled
-					src="https://www.starspins.com/api/content/offer/campaign/welcome-bundle/__assets/styles/images/starspins/select/scale-2/box-bottom.png"/>
+	if (props.config) {
+		return (
+			<CountDownTimerContainerStyled className="u-flex-column u-align-center">
 
-				<CountDownCashValueMessageStyled>
-					Get your free cash_value now
-				</CountDownCashValueMessageStyled>
-			</CountDownTimerCashValueContainerStyled>
+				<CashValue cashValue={cashValue}/>
 
-			<CountDownTimerClockContainerStyled>
-				<CountDownTimerValueStyled>
-					00:00:00
-				</CountDownTimerValueStyled>
-			</CountDownTimerClockContainerStyled>
+				<CountDownTimerClockContainerStyled>
+					<CountDownTimerValueStyled>
+						00:00:00
+					</CountDownTimerValueStyled>
+				</CountDownTimerClockContainerStyled>
 
-			<CountDownTimerButtonContainerStyled>
-				<CountDownTimerLinkStyled className="button-primary" href="https://google.com" target="_blank">
-					Opt In
-				</CountDownTimerLinkStyled>
-			</CountDownTimerButtonContainerStyled>
+				<OptIn link={optInLink}/>
 
-		</CountDownTimerContainerStyled>
-	);
+			</CountDownTimerContainerStyled>
+		);
+	} else {
+		return (
+			<CountDownTimerContainerStyled className="u-flex-column u-align-center">
+			</CountDownTimerContainerStyled>
+		);
+	}
 }

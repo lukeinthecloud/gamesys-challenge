@@ -4,7 +4,7 @@ import { getConfig }                               from '../../core/services/con
 import { HomeContainerStyled }                     from './Home.styles';
 
 export default function Home() {
-	const [config, setConfig] = useState({});
+	const [config, setConfig] = useState(null);
 
 	const configCall = useCallback(async () => {
 		const countDownConfig = await getConfig(process.env.REACT_APP_CONFIG);
