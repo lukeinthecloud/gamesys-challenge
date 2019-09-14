@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import CashValue                                   from './CashValue/CashValue';
+import CashValue                                   from './cash-value/CashValue';
 
 import {
 	CountDownTimerContainerStyled,
@@ -32,7 +32,6 @@ export default function CountDownTimer(props) {
 	if (props.config) {
 		return (
 			<CountDownTimerContainerStyled className="u-flex-column u-align-center">
-
 				<CashValue cashValue={cashValue}/>
 
 				<CountDownTimerClockContainerStyled>
