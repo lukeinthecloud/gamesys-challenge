@@ -1,16 +1,28 @@
 import { generateCountDownTimer } from '../timer.service';
 
-it('should generate a new timer that when started returns an object with correct properties', () => {
-	const expected = {
-		days: 0,
-		hours: 0,
-		minutes: 0,
-		seconds: 29
-	};
+describe('generateCountDownTimer', () => {
+	it('should generate a new timer that when started returns an object with correct properties', (done) => {
+		const expected = {
+			days: expect.any(Number),
+			hours: expect.any(Number),
+			minutes: expect.any(Number),
+			seconds: expect.any(Number)
+		};
 
-	const startTimer = generateCountDownTimer(30);
+		let actual = null;
 
-	const stopTimer = startTimer((values) => {
-		console.log(values);
+		const mockCallback = jest.fn((values) => {
+			actual = values;
+			stopTimer();
+			expect(actual).not.toEqual(0);
+			expect(actual).not.toEqual(30);
+			expect(actual).toMatchObject(expect.objectContaining(expected));
+			expect(mockCallback).toHaveBeenCalledTimes(1);
+			done();
+		});
+
+		const startTimer = generateCountDownTimer(30);
+
+		const stopTimer = startTimer(mockCallback);
 	});
 });
