@@ -15,7 +15,7 @@ function generateCountDownTimer(time, updateCallback) {
 	//       methods in the module to make use of currying to allow you to instantiate and start
 	//       your new timer as well as a have a way to stop it when you like
 	return () => {
-		_stopTimer(interval);
+		_stopTimer(interval, updateCallback);
 	};
 }
 
@@ -23,13 +23,13 @@ function _startCountDown(endTime, updateCallback) {
 	const interval = setInterval(() => {
 		const now = new Date().getTime();
 		const timeDifference = endTime - now;
-		const timeValues = _getTimeValues(timeDifference);
 
 		if (timeDifference <= 0) {
-			_stopTimer(interval);
-			updateCallback(timeValues);
+			_stopTimer(interval, updateCallback);
 			return;
 		}
+
+		const timeValues = _getTimeValues(timeDifference);
 
 		// Note: This can take multiple approaches, I decided that a callback was the most simple
 		// RxJS/PubSub is an option or redux observables but would be overkill in this instance.
@@ -57,7 +57,8 @@ function _getTimeValues(timeDifference) {
 	return {
 		hours,
 		minutes,
-		seconds
+		seconds,
+		complete: false
 	}
 }
 
@@ -71,8 +72,14 @@ function _setTimeFormatting(value) {
 	return `${value}`
 }
 
-function _stopTimer(interval) {
+function _stopTimer(interval, updateCallback) {
 	clearInterval(interval);
+	updateCallback({
+		hours: '00',
+		minutes: '00',
+		seconds: '00',
+		complete: true
+	});
 }
 
 export {

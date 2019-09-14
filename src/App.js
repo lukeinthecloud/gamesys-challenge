@@ -5,7 +5,6 @@ import dotenv        from 'dotenv';
 
 function App() {
 	dotenv.config();
-
 	return (
 		<Home/>
 	);
