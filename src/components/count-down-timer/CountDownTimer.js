@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { generateCountDownTimer }                  from '../../core/services/timer/timer.service';
 import CashValue                                   from './cash-value/CashValue';
 
 import {
 	CountDownTimerContainerStyled,
 	CountDownTimerClockContainerStyled,
 	CountDownTimerValueStyled
-}            from './CountDownTimer.styles';
+} from './CountDownTimer.styles';
 
 import OptIn from './opt-in/Opt-in';
 
@@ -16,18 +17,31 @@ export default function CountDownTimer(props) {
 	});
 	const [optInLink, setOptInLink] = useState('');
 	const [duration, setDuration] = useState(0);
+	const [timer, setTimer] = useState({
+		hours: '00',
+		minutes: '00',
+		seconds: '00',
+	});
+
+
 
 	const _setDataFromConfig = useCallback(() => {
 		if (props.config) {
 			setCashValue(props.config.cashValue);
 			setOptInLink(props.config.optInLink);
 			setDuration(props.config.duration);
+			generateCountDownTimer(duration, _timerUpdateCallback);
 		}
-	}, [props.config]);
+	}, [props.config, duration]);
 
 	useEffect(() => {
 		_setDataFromConfig();
 	}, [props.config, _setDataFromConfig]);
+
+	function _timerUpdateCallback(value) {
+		console.log(value);
+		setTimer(value);
+	}
 
 	if (props.config) {
 		return (
@@ -36,7 +50,7 @@ export default function CountDownTimer(props) {
 
 				<CountDownTimerClockContainerStyled>
 					<CountDownTimerValueStyled>
-						00:00:00
+						{timer.hours}:{timer.minutes}:{timer.seconds}
 					</CountDownTimerValueStyled>
 				</CountDownTimerClockContainerStyled>
 

@@ -1,4 +1,4 @@
-function generateCountDownTimer(time) {
+function generateCountDownTimer(time, updateCallback) {
 	let endDate = new Date();
 
 	if (typeof time === 'string') {
@@ -9,27 +9,27 @@ function generateCountDownTimer(time) {
 
 	const endTime = endDate.getTime();
 
+	const interval = _startCountDown(endTime, updateCallback);
+
 	// Note: thought instead of creating a class or exposing multiple
-	// methods in the module to make use of currying to allow you to instantiate and start
-	// your new timer as well as a way to stop it
-	return (updateCallback) => {
-		const interval = _startCountDown(endTime, updateCallback);
-		return () => {
-			_stopTimer(interval);
-		};
-	}
+	//       methods in the module to make use of currying to allow you to instantiate and start
+	//       your new timer as well as a have a way to stop it when you like
+	return () => {
+		_stopTimer(interval);
+	};
 }
 
 function _startCountDown(endTime, updateCallback) {
 	const interval = setInterval(() => {
 		const now = new Date().getTime();
 		const timeDifference = endTime - now;
+		const timeValues = _getTimeValues(timeDifference);
+
 		if (timeDifference <= 0) {
 			_stopTimer(interval);
+			updateCallback(timeValues);
 			return;
 		}
-
-		const timeValues = _getTimeValues(timeDifference);
 
 		// Note: This can take multiple approaches, I decided that a callback was the most simple
 		// RxJS/PubSub is an option or redux observables but would be overkill in this instance.
@@ -44,17 +44,31 @@ function _getTimeValues(timeDifference) {
 	const hoursCalculationValue = 1000 * 60 * 60;
 	const minutesCalculationValue = 1000 * 60;
 
-	const days = Math.floor(timeDifference / daysCalculationValue);
-	const hours = Math.floor((timeDifference % daysCalculationValue) / hoursCalculationValue);
-	const minutes = Math.floor((timeDifference % hoursCalculationValue) / minutesCalculationValue);
-	const seconds = Math.floor((timeDifference % minutesCalculationValue) / 1000);
+	const daysInHoursRawValue = Math.floor(timeDifference / daysCalculationValue * 24);
+
+	const hoursRawValue = Math.floor((timeDifference % daysCalculationValue) / hoursCalculationValue + daysInHoursRawValue);
+	const minutesRawValue = Math.floor((timeDifference % hoursCalculationValue) / minutesCalculationValue);
+	const secondsRawValue = Math.floor((timeDifference % minutesCalculationValue) / 1000);
+
+	const hours = _setTimeFormatting(hoursRawValue);
+	const minutes = _setTimeFormatting(minutesRawValue);
+	const seconds = _setTimeFormatting(secondsRawValue);
 
 	return {
-		days,
 		hours,
 		minutes,
 		seconds
 	}
+}
+
+function _setTimeFormatting(value) {
+	if (value === 0) {
+		return '00';
+	} else if (value < 10) {
+		return `0${value}`;
+	}
+
+	return `${value}`
 }
 
 function _stopTimer(interval) {
