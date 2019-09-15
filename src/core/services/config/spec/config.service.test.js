@@ -32,5 +32,26 @@ describe('getConfig', () => {
 		expect(mockAxios.get).toHaveBeenCalledTimes(1);
 		expect(actual).toStrictEqual(expected);
 	});
+
+	it('should return an error with a message if it could not retrieve the config', async () => {
+		const expected = {
+			data: {
+				message: 'Could not resolve config'
+			}
+		};
+
+		mockAxios.get.mockImplementationOnce(() =>
+			Promise.reject({
+				data: {
+					message: 'Could not resolve config'
+				}
+			})
+		);
+
+		const testConfigUrl = 'http://some-api-endpoint.com';
+		const actual = await getConfig(testConfigUrl);
+
+		expect(actual).toStrictEqual(expected);
+	});
 });
 

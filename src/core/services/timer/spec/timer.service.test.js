@@ -14,8 +14,8 @@ describe('generateCountDownTimer', () => {
 		const mockCallback = jest.fn((values) => {
 			actual = values;
 			stopTimer();
-			expect(actual.seconds).not.toBe(0);
-			expect(actual.seconds).not.toEqual(30);
+			expect(actual.seconds).not.toBe('00');
+			expect(actual.seconds).not.toEqual('30');
 			expect(actual).toMatchObject(expect.objectContaining(expected));
 			expect(mockCallback).toHaveBeenCalledTimes(1);
 			done();
@@ -40,7 +40,7 @@ describe('generateCountDownTimer', () => {
 		const mockCallback = jest.fn((values) => {
 			actual = values;
 			stopTimer();
-			expect(actual.hours).not.toBe(0);
+			expect(actual.hours).not.toBe('00');
 			expect(actual).toMatchObject(expect.objectContaining(expected));
 			expect(mockCallback).toHaveBeenCalledTimes(1);
 			done();
@@ -65,7 +65,34 @@ describe('generateCountDownTimer', () => {
 		const mockCallback = jest.fn((values) => {
 			actual = values;
 			stopTimer();
-			expect(actual.hours).not.toBe(0);
+			expect(actual.hours).not.toBe('00');
+			expect(actual).toMatchObject(expect.objectContaining(expected));
+			expect(mockCallback).toHaveBeenCalledTimes(1);
+			done();
+		});
+
+		stopTimer = generateCountDownTimer(dateNumber, mockCallback);
+	});
+
+	it('Should return valid object but all are 0 if invalid date time sent', (done) => {
+		const expected = {
+			hours: expect.any(String),
+			minutes: expect.any(String),
+			seconds: expect.any(String)
+		};
+
+		let actual = null;
+		let stopTimer = null;
+
+		// Note: very far ahead date that would expire eventually
+		const dateNumber = 'Invalid Date Time';
+
+		const mockCallback = jest.fn((values) => {
+			actual = values;
+			stopTimer();
+			expect(actual.hours).toBe('00');
+			expect(actual.minutes).toBe('00');
+			expect(actual.seconds).toBe('00');
 			expect(actual).toMatchObject(expect.objectContaining(expected));
 			expect(mockCallback).toHaveBeenCalledTimes(1);
 			done();
