@@ -25,7 +25,7 @@ function clearStorage() {
 
 function _startCountDown(endTime, updateCallback) {
 	const interval = setInterval(() => {
-		const timeDifference= _getTimeDiffeence(endTime);
+		const timeDifference = _getTimeDiffeence(endTime);
 
 		if (timeDifference <= 0) {
 			_stopTimer(interval);
@@ -69,6 +69,11 @@ function _determineDateType(time) {
 		endDate = new Date(time);
 	} else {
 		endDate.setSeconds(endDate.getSeconds() + time);
+	}
+
+	if (!_isValidDate(endDate)) {
+		console.error('Error:', `Received and invalid time of: ${time}`);
+		return new Date();
 	}
 
 	return endDate;
@@ -115,6 +120,10 @@ function _setTimeFormatting(value) {
 
 function _isValidDateType(time) {
 	return typeof time === 'string' || `${time}`.length >= 13;
+}
+
+function _isValidDate(endDate) {
+	return endDate instanceof Date && !isNaN(endDate);
 }
 
 function _stopTimer(interval) {
