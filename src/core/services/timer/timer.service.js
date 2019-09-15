@@ -5,17 +5,22 @@ const defaultCompleteValue = {
 	complete: true
 };
 
-function generateCountDownTimer(time, updateCallback) {
-	let endDate = new Date();
+const endTimeStorageKey = 'endTime';
 
-	if (_isValidDateType(time)) {
-		endDate = new Date(time);
+function generateCountDownTimer(time, updateCallback) {
+	const storedTime = sessionStorage.getItem(endTimeStorageKey);
+	let endDate = null;
+
+	if (!storedTime) {
+		endDate = _determineDateType(time);
 	} else {
-		endDate.setSeconds(endDate.getSeconds() + time);
+		endDate = _convertStoredTimeToDate(storedTime);
 	}
 
 	const endTime = endDate.getTime();
-	localStorage.setItem('endTime', endTime.toString());
+
+	sessionStorage.setItem(endTimeStorageKey, endTime.toString());
+
 	const interval = _startCountDown(endTime, updateCallback);
 
 	// Note: thought instead of creating a class or exposing multiple
@@ -29,9 +34,13 @@ function generateCountDownTimer(time, updateCallback) {
 	};
 }
 
+function clearStorage() {
+	sessionStorage.removeItem(endTimeStorageKey);
+}
+
 function _startCountDown(endTime, updateCallback) {
 	// Note: generally most people would use a library, as interval is not totally accurate, however
-	//  I could not fully justify the need for one and this seemed like the most simple and effective solution.
+	//       I could not fully justify the need for one and this seemed like the most simple and effective solution.
 	const interval = setInterval(() => {
 		const now = new Date().getTime();
 		const timeDifference = endTime - now;
@@ -45,11 +54,28 @@ function _startCountDown(endTime, updateCallback) {
 		const timeValues = _getTimeValues(timeDifference);
 
 		// Note: This can take multiple approaches, I decided that a callback was the most simple
-		// RxJS/PubSub is an option or redux observables but would be overkill in this instance.
+		//       RxJS/PubSub is an option or redux observables but would be overkill in this instance.
 		updateCallback(timeValues);
 	}, 1000);
 
 	return interval;
+}
+
+function _determineDateType(time) {
+	let endDate = new Date();
+	if (_isValidDateType(time)) {
+		endDate = new Date(time);
+	} else {
+		endDate.setSeconds(endDate.getSeconds() + time);
+	}
+
+	return endDate;
+}
+
+function _convertStoredTimeToDate(storedTime) {
+	const parsedEndDate = parseInt(storedTime, 10);
+	const endDate = new Date(parsedEndDate);
+	return endDate
 }
 
 function _getTimeValues(timeDifference) {
@@ -91,8 +117,13 @@ function _isValidDateType(time) {
 
 function _stopTimer(interval) {
 	clearInterval(interval);
+	clearStorage();
 }
 
+
 export {
-	generateCountDownTimer
+	generateCountDownTimer,
+
+	// Note: exposing this in case we wanted to re-initiate the timer if there was an API update
+	clearStorage
 }
