@@ -1,6 +1,9 @@
+const maxWidthMD = 'max-width: 992px';
 const maxWidthSM = 'max-width: 768px';
-
+const maxWidthXS = 'max-width: 576px';
 
 export {
-	maxWidthSM
+	maxWidthMD,
+	maxWidthSM,
+	maxWidthXS
 }

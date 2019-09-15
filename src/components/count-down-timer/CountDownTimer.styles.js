@@ -1,13 +1,11 @@
-import styled, { css } from 'styled-components/macro'
-import { maxWidthSM }  from '../../styles/media-queries.styles';
+import styled, { css }                        from 'styled-components/macro'
+import { maxWidthSM, maxWidthMD, maxWidthXS } from '../../styles/media-queries.styles';
 
 const backgroundLargeUrl = 'https://www.starspins.com/api/content/offer/campaign/welcome-extra-ten/__assets/images/src/apps/welcome-extra-ten/images/starspins/tile/background/scale-2/bg.jpg';
 const backgroundSmallUrl = 'https://www.starspins.com/api/content/offer/campaign/welcome-extra-ten/__assets/images/src/apps/welcome-extra-ten/images/starspins/tile/background/scale-1/bg.jpg';
 
 const upperZIndex = 10;
 const lowerZIndex = 0;
-
-
 
 const addUpperIndex = css`
 	position: relative;
@@ -39,14 +37,24 @@ export const CountDownTimerContainerStyled = styled.div`
 		z-index: ${lowerZIndex};
 	}
 	
-	@media(${maxWidthSM}) {
+	@media(${maxWidthMD}) {
+		width: 80%;
+    	height: 15rem;
+  	}
+  	
+  	@media(${maxWidthSM}) {
 		width: 90%;
     	height: 15rem;
-    
 		&:after {
 			background: url(${backgroundSmallUrl}) no-repeat bottom left;
 			background-size: cover;
 		}
+  	}
+  	
+  	@media(${maxWidthXS}) {
+		width: 100%;
+    	height: 100vh;
+        justify-content: center;
   	}
 `;
 
@@ -61,6 +69,10 @@ export const CountDownTimerCashValueContainerStyled = styled.div`
 export const CountDownTimerCashValueImageStyled = styled.img`
 	width: 50%;
 	height: auto;
+	
+	@media(${maxWidthXS}) {
+		width: 100%;
+  	}
 `;
 
 export const CountDownCashValueMessageStyled = styled.span`
@@ -69,10 +81,18 @@ export const CountDownCashValueMessageStyled = styled.span`
 	font-size: 2vw;
 	font-weight: bold;
 	margin: .5rem 0 0 0;
+	
+	@media(${maxWidthXS}) {
+		font-size: 2rem;
+  	}
 `;
 
 export const CountDownTimerClockContainerStyled = styled.div`
 	${addUpperIndex};
+	
+	@media(${maxWidthXS}) {
+		margin-top: 2rem;
+  	}
 `;
 
 export const CountDownTimerValueStyled = styled.span`
@@ -80,11 +100,24 @@ export const CountDownTimerValueStyled = styled.span`
 	
 	font-size: 4vw;
 	font-weight: bold;
+	
+	@media(${maxWidthXS}) {
+		font-size: 3rem; 
+  	}
 `;
 
-export const CountDownTimerButtonContainerStyled = styled.div`
+export const CountDownTimerLinkContainerStyled = styled.div`
 	${addUpperIndex};
 	width: 50%;
+	
+	@media(${maxWidthMD}) {
+		margin-top: .5rem;
+  	}
+  	
+  	@media(${maxWidthSM}) {
+		width: 90%;
+		margin-top: 2rem;
+  	}
 `;
 
 export const CountDownTimerLinkStyled = styled.a`
