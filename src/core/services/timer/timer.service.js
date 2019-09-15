@@ -15,7 +15,7 @@ function generateCountDownTimer(time, updateCallback) {
 	}
 
 	const endTime = endDate.getTime();
-
+	localStorage.setItem('endTime', endTime.toString());
 	const interval = _startCountDown(endTime, updateCallback);
 
 	// Note: thought instead of creating a class or exposing multiple

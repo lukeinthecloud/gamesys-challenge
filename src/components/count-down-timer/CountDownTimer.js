@@ -34,7 +34,7 @@ export default function CountDownTimer(props) {
 	}
 
 	function showClock() {
-		if (timerComplete) {
+		if (!timerComplete) {
 			return (
 				<>
 					<CashValue cashValue={cashValue}/>
