@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import ParticleContainer                           from '../particle/ParticleContainer';
 import CashValue                                   from './cash-value/CashValue';
 
 import {
@@ -51,14 +52,20 @@ export default function CountDownTimer(props) {
 
 	if (props.config) {
 		return (
-			<CountDownTimerContainerStyled className="u-flex-column u-align-center">
-				{showClock()}
-			</CountDownTimerContainerStyled>
+			<>
+				<CountDownTimerContainerStyled className="u-flex-column u-align-center">
+					{showClock()}
+					<ParticleContainer/>
+				</CountDownTimerContainerStyled>
+			</>
 		);
 	} else {
 		return (
-			<CountDownTimerContainerStyled className="u-flex-column u-align-center">
-			</CountDownTimerContainerStyled>
+			<>
+				<CountDownTimerContainerStyled className="u-flex-column u-align-center">
+					<ParticleContainer/>
+				</CountDownTimerContainerStyled>
+			</>
 		);
 	}
 }
