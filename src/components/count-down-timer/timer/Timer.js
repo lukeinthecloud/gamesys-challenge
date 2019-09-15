@@ -1,7 +1,6 @@
-import React, { useEffect, useState }                                    from 'react';
+import React, { useEffect, useState, useCallback }                                    from 'react';
 import { generateCountDownTimer }                                        from '../../../core/services/timer/timer.service';
 import { CountDownTimerClockContainerStyled, CountDownTimerValueStyled } from '../CountDownTimer.styles';
-
 
 export default function Timer(props) {
 	const [timer, setTimer] = useState({
@@ -10,15 +9,14 @@ export default function Timer(props) {
 		seconds: '00',
 	});
 
-	useEffect(() => {
-		if (props.duration) {
-			generateCountDownTimer(props.duration, _timerUpdateCallback);
-		}
-	}, [props.duration]);
-
-	function _timerUpdateCallback(value) {
+	const _timerUpdateCallback = useCallback((value) => {
 		setTimer(value);
-	}
+		props.updateTimerCompleteStatus(value.complete);
+	}, [props]);
+
+	useEffect(() => {
+		generateCountDownTimer(props.duration, _timerUpdateCallback);
+	}, [props.duration, _timerUpdateCallback]);
 
 	return (
 		<CountDownTimerClockContainerStyled>
