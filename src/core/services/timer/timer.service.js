@@ -8,6 +8,47 @@ const defaultCompleteValue = {
 const endTimeStorageKey = 'endTime';
 
 function generateCountDownTimer(time, updateCallback) {
+	const endTime = _checkForExistingEndTime(time);
+
+	sessionStorage.setItem(endTimeStorageKey, endTime.toString());
+	const interval = _startCountDown(endTime, updateCallback);
+
+	return () => {
+		_stopTimer(interval);
+		return defaultCompleteValue;
+	};
+}
+
+function clearStorage() {
+	sessionStorage.removeItem(endTimeStorageKey);
+}
+
+function _startCountDown(endTime, updateCallback) {
+	const interval = setInterval(() => {
+		const timeDifference= _getTimeDiffeence(endTime);
+
+		if (timeDifference <= 0) {
+			_stopTimer(interval);
+			updateCallback(defaultCompleteValue);
+			return;
+		}
+
+		const timeValues = _getTimeValues(timeDifference);
+
+		updateCallback(timeValues);
+	}, 1000);
+
+	return interval;
+}
+
+function _getTimeDiffeence(endTime) {
+	const now = new Date().getTime();
+	const timeDifference = endTime - now;
+
+	return timeDifference;
+}
+
+function _checkForExistingEndTime(time) {
 	const storedTime = sessionStorage.getItem(endTimeStorageKey);
 	let endDate = null;
 
@@ -19,46 +60,7 @@ function generateCountDownTimer(time, updateCallback) {
 
 	const endTime = endDate.getTime();
 
-	sessionStorage.setItem(endTimeStorageKey, endTime.toString());
-
-	const interval = _startCountDown(endTime, updateCallback);
-
-	// Note: thought instead of creating a class or exposing multiple
-	//       methods in the module to make use of currying to allow you to instantiate and start
-	//       your new timer as well as a have a way to stop it when you like
-	return () => {
-		_stopTimer(interval);
-
-		// Note: we return this else we go into a recursive loop (if the stop was in the callback)
-		return defaultCompleteValue;
-	};
-}
-
-function clearStorage() {
-	sessionStorage.removeItem(endTimeStorageKey);
-}
-
-function _startCountDown(endTime, updateCallback) {
-	// Note: generally most people would use a library, as interval is not totally accurate, however
-	//       I could not fully justify the need for one and this seemed like the most simple and effective solution.
-	const interval = setInterval(() => {
-		const now = new Date().getTime();
-		const timeDifference = endTime - now;
-
-		if (timeDifference <= 0) {
-			_stopTimer(interval);
-			updateCallback(defaultCompleteValue);
-			return;
-		}
-
-		const timeValues = _getTimeValues(timeDifference);
-
-		// Note: This can take multiple approaches, I decided that a callback was the most simple
-		//       RxJS/PubSub is an option or redux observables but would be overkill in this instance.
-		updateCallback(timeValues);
-	}, 1000);
-
-	return interval;
+	return endTime;
 }
 
 function _determineDateType(time) {
@@ -120,10 +122,8 @@ function _stopTimer(interval) {
 	clearStorage();
 }
 
-
 export {
 	generateCountDownTimer,
-
 	// Note: exposing this in case we wanted to re-initiate the timer if there was an API update
 	clearStorage
 }
