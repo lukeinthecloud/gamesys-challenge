@@ -22,7 +22,7 @@ function generateCountDownTimer(time, updateCallback) {
 	//       methods in the module to make use of currying to allow you to instantiate and start
 	//       your new timer as well as a have a way to stop it when you like
 	return () => {
-		clearInterval(interval);
+		_stopTimer(interval);
 
 		// Note: we return this else we go into a recursive loop (if the stop was in the callback)
 		return defaultCompleteValue;
@@ -38,6 +38,7 @@ function _startCountDown(endTime, updateCallback) {
 
 		if (timeDifference <= 0) {
 			_stopTimer(interval);
+			updateCallback(defaultCompleteValue);
 			return;
 		}
 

@@ -31,7 +31,6 @@ export default function CountDownTimer(props) {
 
 	function updateTimerCompleteStatus(value) {
 		setTimerComplete(value);
-		console.log(value)
 	}
 
 	function showClock() {
@@ -45,7 +44,7 @@ export default function CountDownTimer(props) {
 			)
 		} else {
 			return (
-				<Timer duration={duration} updateTimerCompleteStatus={updateTimerCompleteStatus}/>
+				<Timer/>
 			);
 		}
 	}
