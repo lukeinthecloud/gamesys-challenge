@@ -12,6 +12,7 @@ Please do the following to setup the project to run locally:
     - Once this is complete run `serve -s build`, this should open a server on port 5000, if this is different
     please run the following `serve -l 5000`
 2) To run the development build run `npm start`
+3) To run tests run `npm test`
 
 
 ### Configuration

@@ -6,21 +6,22 @@ import {
 	CountDownTimerCashValueImageStyled
 }                        from '../CountDownTimer.styles';
 
-import { maxWidthSM } from '../../../styles/media-queries.styles';
+import { maxWidthSM, retinaDisplay } from '../../../styles/media-queries.styles';
 
 export default function CashValue(props) {
 	const largeImage = 'https://www.starspins.com/api/content/offer/campaign/welcome-bundle/__assets/styles/images/starspins/select/scale-2/box-bottom.png';
 	const smallImage = 'https://www.starspins.com/api/content/offer/campaign/welcome-bundle/__assets/styles/images/starspins/select/scale-1/box-bottom.png';
-	const matches = useMediaQuery({query: `(${maxWidthSM})`});
+	const matchMaxWidthSM = useMediaQuery({query: `(${maxWidthSM})`});
+	const matchRetinaDisplay = useMediaQuery({query: `(${retinaDisplay})`});
 
 	function _displayHeaderImage() {
-		if (matches) {
+		if (!matchMaxWidthSM || matchRetinaDisplay) {
 			return (
-				<CountDownTimerCashValueImageStyled src={smallImage}/>
+				<CountDownTimerCashValueImageStyled src={largeImage}/>
 			)
 		} else {
 			return (
-				<CountDownTimerCashValueImageStyled src={largeImage}/>
+				<CountDownTimerCashValueImageStyled src={smallImage}/>
 			)
 		}
 	}

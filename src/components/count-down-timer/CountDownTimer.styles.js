@@ -7,9 +7,14 @@ const backgroundSmallUrl = 'https://www.starspins.com/api/content/offer/campaign
 const upperZIndex = 10;
 const lowerZIndex = 0;
 
-const addUpperIndex = css`
+const addUpperIndexCss = css`
 	position: relative;
 	z-index: ${upperZIndex};
+`;
+
+const backgroundLargeCss = css`
+		background: url(${backgroundLargeUrl}) no-repeat bottom left;
+		background-size: cover;
 `;
 
 export const CountDownTimerContainerStyled = styled.div`
@@ -25,9 +30,8 @@ export const CountDownTimerContainerStyled = styled.div`
 	box-shadow: 10px 10px 5px -5px rgba(0,0,0,0.35);
 	
 	&:after {
+		${backgroundLargeCss};
 		content: "";
-		background: url(${backgroundLargeUrl}) no-repeat bottom left;
-		background-size: cover;
 		opacity: .6;
 		top: 0;
 		left: 0;
@@ -56,10 +60,17 @@ export const CountDownTimerContainerStyled = styled.div`
     	height: 100vh;
         justify-content: center;
   	}
+  	
+  	@media only screen and (min--moz-device-pixel-ratio: 2),
+	only screen and (-o-min-device-pixel-ratio: 2/1),
+	only screen and (-webkit-min-device-pixel-ratio: 2),
+	only screen and (min-device-pixel-ratio: 2) {
+		${backgroundLargeCss};
+	}
 `;
 
 export const CountDownTimerCashValueContainerStyled = styled.div`
-	${addUpperIndex};
+	${addUpperIndexCss};
 	width: 100%;
     display: flex;
     align-items: center;
@@ -88,7 +99,7 @@ export const CountDownCashValueMessageStyled = styled.span`
 `;
 
 export const CountDownTimerClockContainerStyled = styled.div`
-	${addUpperIndex};
+	${addUpperIndexCss};
 	
 	@media(${maxWidthXS}) {
 		margin-top: 2rem;
@@ -107,7 +118,7 @@ export const CountDownTimerValueStyled = styled.span`
 `;
 
 export const CountDownTimerLinkContainerStyled = styled.div`
-	${addUpperIndex};
+	${addUpperIndexCss};
 	width: 50%;
 	
 	@media(${maxWidthMD}) {
