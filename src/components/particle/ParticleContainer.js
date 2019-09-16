@@ -1,7 +1,7 @@
-import React from 'react';
-import {ParticleContainerStyled} from './Particle.style';
-import Particles from 'react-particles-js';
-import {particleConfig} from './particle-config.const';
+import React                     from 'react';
+import {ParticleContainerStyled} from './Particle.styles';
+import Particles                 from 'react-particles-js';
+import {particleConfig}          from './particle-config.const';
 
 export default function ParticleContainer() {
     return (

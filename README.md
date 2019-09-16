@@ -1,68 +1,75 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Setup
 
-## Available Scripts
+Please do the following to setup the project to run locally:
 
-In the project directory, you can run:
+### Pre-setup
+1) Run `npm install` from root of the project to install dependencies
+2) Run `npm install -g serve` in order to run the build folder locally later
 
-### `npm start`
+### Run Options
+1) To run the build version please do the following:
+    - Run `npm build` to create dist folder
+    - Once this is complete run `serve -s build`, this should open a server on port 5000, if this is different
+    please run the following `serve -l 5000`
+2) To run the development build run `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+### Configuration
 
-### `npm test`
+This project uses a config file located under the `/public` folder. Change values in here in order to change what is displayed.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Folder Structure
 
-### `npm run build`
+The project has been split into the following high level sections under /src:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Components
+- Containers
+- Core
+- styles
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+#### Components
+This contains all reusable React components for this project, these are the lower level elements.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Containers
+This is the higher level React components, these would generally be used as route end points or just general pages.
 
-### `npm run eject`
+#### Core
+Core is where all business logic for the application would be situated. This at the moment only
+contains services which are reusable pieces of logic. You could als split this and add folders depending on
+the scale for your project (an example would be a utility folder).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Styles
+These just contain global styles for the entire project.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Thought Process
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- I have decided to make use of styled components library to style my react components. There are some global classes that I make use of, 
+however for the most part styling is done through styled components. In term of naming I always append styled to the end of these in order
+to create easy to read split between that and a regular react component. These styles generally lie at a higher level of a component depending on
+how complex it is and the general structure.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- In the services folder there is a communication layer. There is a general abstraction I make over a library or whatever tool
+I use for a project when making http calls. This is just to easily allow for me to swap what I want without affecting the overall API that other 
+components or services might be using.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- In the time service there were a couple of decisions I decided to make:
+    - I decided not to use a library. Although `interval` timers can sometimes be inaccurate, in this case it seemed to be 
+    the most simple solution for the problem.
+    
+    - I have avoided making use of Redux or any form of state control for this and tried to make it as self handling as possible in
+    order to reduce complexity. As such I have not used classes as well and tried to keep it light and functional as I can and only exposing 
+    what I need from that module
+    
+    - To add onto this I could of also used something like Observables/PubSub pattern in order to inform a component that the time has changed,
+    However I decided that using a simple callback method which the component decided how to utilize instead of a subscription would be a cleaner and leaner
+    solution.
+    
+    - I made use of session.storage to get around one of the 3 timer situations:
+        1) You can pass a number in the config.json i.e. 30
+        2) You can pass a date string i.e. "Sat Sep 29 2019 21:04:33 GMT+0100 (British Summer Time)"
+        3) You can pass a date number  i.e. 1568837073000
+        
+    Numbers 2 and 3 you can refresh the page and it will continue where you left it. However with solution 1 it creates a date off of this and when refreshing I store this 
+    in session.storage which will then allow it to pick up where it left off and not be an issue if you had to open it on a new tab.
+    I have left a clear storage method exposed on the timer.service module, even though I dont use it. This is just there in case lets say you
+    had web sockets connected that the client and server used to say the timer has changed you could use clearStorage and then create a new timer.

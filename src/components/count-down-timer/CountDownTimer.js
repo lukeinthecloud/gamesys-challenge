@@ -6,7 +6,7 @@ import {
 	CountDownTimerContainerStyled,
 } from './CountDownTimer.styles';
 
-import OptIn from './opt-in/Opt-in';
+import OptIn from './opt-in/OptIn';
 import Timer from './timer/Timer';
 
 export default function CountDownTimer(props) {
